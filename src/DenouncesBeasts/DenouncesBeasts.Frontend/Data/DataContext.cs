@@ -11,5 +11,7 @@ namespace DenouncesBeasts.Frontend.Data
         }
 
         public DbSet<Denounce> Denounces { get; set; }
+        public DbSet<Denounzer> Denounzers { get; set; } 
+
     }
 }
