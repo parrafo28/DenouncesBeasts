@@ -1,5 +1,6 @@
-﻿using DenouncesBeasts.Frontend.Data;
+﻿using DenouncesBeasts.Domain.Entities;
 using DenouncesBeasts.Frontend.Models;
+using DenouncesBeasts.Persistence;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,33 +15,37 @@ namespace DenouncesBeasts.Frontend.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index(string filter = "")
-        {
-            var list = await _context.Denounzers.ToListAsync();
+        //public async Task<JsonResult> GetAll(string filter = "")
+        //{
+        //    var list = await _context.Denounzers.ToListAsync();
 
-            if (!string.IsNullOrEmpty( filter))
-            {
-                list = list.Where(d => d.Name.ToLower().Contains(filter.ToLower())
-             || d.Lastname.ToLower().Contains(filter.ToLower())).ToList();
-            }
-            return View(list);
+        //    if (!string.IsNullOrEmpty(filter))
+        //    {
+        //        list = list.Where(d => d.Name.ToLower().Contains(filter.ToLower())
+        //                             || d.Lastname.ToLower().Contains(filter.ToLower()))
+        //                   .ToList();
+        //    }
+        //    return Json(list);
+        //}
+
+        //public async Task<JsonResult> Get(int id)
+        //{
+        //    var denounce = await _context.Denounzers.FindAsync(id);
+        //    if (denounce == null)
+        //    {
+        //        return Json(new { success = false, message = "Not found" });
+        //    }
+        //    return Json(denounce);
+        //}
+
+        public IActionResult Index( )
+        { 
+            return View();
         }
 
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var denounce = await _context.Denounzers
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (denounce == null)
-            {
-                return NotFound();
-            }
-
-            return View(denounce);
+        public IActionResult Details(int id)
+        {  
+            return View(new Denounzer { Id = id });
         }
 
         [HttpGet]
@@ -49,100 +54,29 @@ namespace DenouncesBeasts.Frontend.Controllers
             return View();
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Denounzer denounce)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(denounce);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(denounce);
+        //[HttpPost]
+        //public async Task<JsonResult> Create([FromBody] Denounzer denounce)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return Json(new { success = false, message = "Invalid data" });
+        //    }
+
+        //    _context.Add(denounce);
+        //    await _context.SaveChangesAsync();
+        //    return Json(new { success = true, message = "Created successfully!" });
+        //}
+
+        public IActionResult Edit(int id)
+        { 
+            return View(new Denounzer { Id = id });
         }
+         
+        public IActionResult Delete(int id)
+        { 
 
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var denounce = await _context.Denounzers.FindAsync(id);
-            if (denounce == null)
-            {
-                return NotFound();
-            }
-            return View(denounce);
+            return View(new Denounzer { Id = id });
         }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Denounzer denounce)
-        {
-            if (id != denounce.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(denounce);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!DenouncerExists(denounce.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(denounce);
-        }
-
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var entity = await _context.Denounzers
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (entity == null)
-            {
-                return NotFound();
-            }
-
-            return View(entity);
-        }
-
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var entity = await _context.Denounzers.FindAsync(id);
-            if (entity != null)
-            {
-                _context.Denounzers.Remove(entity);
-            }
-
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool DenouncerExists(int id)
-        {
-            return _context.Denounzers.Any(e => e.Id == id);
-        }
+ 
     }
 }

@@ -1,12 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace DenouncesBeasts.Frontend.Models
+namespace DenouncesBeasts.Domain.Entities
 { 
-    public class DenounceViewModel
-    { 
+    public class Denounce
+    {
+        [Key]
         public int Id { get; set; }
 
         [MinLength(3,ErrorMessage = "Debe poner un titulo de al menos 3 caracteres") ]
@@ -28,6 +28,8 @@ namespace DenouncesBeasts.Frontend.Models
         public decimal Latitude { get; set; }
 
         public int DenounzerId { get; set; }
-        public SelectList? DenounzersSelectList { get; set; }
+
+        public Denounzer Denounzer { get; set; }
+       
     }
 }

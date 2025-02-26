@@ -1,7 +1,8 @@
-﻿using DenouncesBeasts.Frontend.Models;
+﻿
+using DenouncesBeasts.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace DenouncesBeasts.Frontend.Data
+namespace DenouncesBeasts.Persistence
 {
     public class DataContext : DbContext
     {

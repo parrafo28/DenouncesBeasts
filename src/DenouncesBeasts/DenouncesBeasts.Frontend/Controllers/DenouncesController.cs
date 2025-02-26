@@ -4,9 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using DenouncesBeasts.Frontend.Data;
+using Microsoft.EntityFrameworkCore; 
 using DenouncesBeasts.Frontend.Models;
+using DenouncesBeasts.Persistence;
+using DenouncesBeasts.Domain.Entities;
 
 namespace DenouncesBeasts.Frontend.Controllers
 {
@@ -49,7 +50,7 @@ namespace DenouncesBeasts.Frontend.Controllers
                 .ToListAsync();
 
            
-            DenounceModel model = new DenounceModel();
+            DenounceViewModel model = new DenounceViewModel();
             model.DenounzersSelectList = new SelectList(denounzers, "Id", "Name");
             return View (model);  
         }
@@ -57,7 +58,7 @@ namespace DenouncesBeasts.Frontend.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(DenounceModel model)
+        public async Task<IActionResult> Create(DenounceViewModel model)
         {
             if (ModelState.IsValid)
             {
